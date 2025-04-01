@@ -54,7 +54,7 @@ class _HomeeState extends State<Homee> {
                 Icon(Icons.account_circle, size: 40, color: Colors.white),
                 SizedBox(width: 3),
                 Text(
-                  "USER",
+                  "USER-NAME",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ],
