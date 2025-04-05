@@ -1,0 +1,2 @@
+C:/FlutterProjects/fitrack/android/app/.cxx/RelWithDebInfo/6q71214b/x86/CMakeFiles/edit_cache.dir
+C:/FlutterProjects/fitrack/android/app/.cxx/RelWithDebInfo/6q71214b/x86/CMakeFiles/rebuild_cache.dir
