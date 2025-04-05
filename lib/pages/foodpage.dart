@@ -73,7 +73,7 @@ class _Food_PageState extends State<Food_Page> {
             ),
             const SizedBox(height: 25),
             const Text(
-              "Quantity (in KG)",
+              "Quantity (in Kg)",
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             const SizedBox(height: 10),
