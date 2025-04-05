@@ -11,7 +11,15 @@ class TutorialPage extends StatelessWidget {
       body: Stack(
         
         children: [
-          
+       Opacity(
+            opacity: 1,
+            child: Image.asset(
+              "assets/gymboy.jpg",
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
