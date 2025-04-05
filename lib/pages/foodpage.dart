@@ -32,7 +32,7 @@ class _Food_PageState extends State<Food_Page> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Food Selection"),
+        title: const Text("Food Selection.."),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         elevation: 0,
