@@ -7,17 +7,11 @@ class TutorialPage extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 32, 32, 32),
       body: Stack(
+        
         children: [
-          Opacity(
-            opacity: 1,
-            child: Image.asset(
-              "assets/gymboy.jpg",
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
-          ),
+          
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
@@ -38,7 +32,7 @@ class TutorialPage extends StatelessWidget {
                           crossAxisCount: 2, // Two columns
                           crossAxisSpacing: 15,
                           mainAxisSpacing: 15,
-                          childAspectRatio: (screenWidth / 2) / (screenHeight * 0.2),
+                          childAspectRatio: (screenWidth / 2) / (screenHeight * 0.4),
                         ),
                         itemCount: 6,
                         itemBuilder: (context, index) {
@@ -62,7 +56,7 @@ class TutorialPage extends StatelessWidget {
                           crossAxisCount: 2, // Two columns
                           crossAxisSpacing: 15,
                           mainAxisSpacing: 15,
-                          childAspectRatio: (screenWidth / 2) / (screenHeight * 0.2),
+                          childAspectRatio: (screenWidth / 2) / (screenHeight * 0.4),
                         ),
                         itemCount: 6,
                         itemBuilder: (context, index) {
@@ -90,7 +84,7 @@ class TutorialPage extends StatelessWidget {
         height: 100,
         decoration: BoxDecoration(
           // ignore: deprecated_member_use
-          color: const Color.fromARGB(255, 165, 164, 164).withOpacity(0.1),
+          color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(

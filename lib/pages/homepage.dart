@@ -10,16 +10,26 @@ class Homee extends StatefulWidget {
 }
 
 class _HomeeState extends State<Homee> {
-  int _streakDays = 10;
+  int _streakDays = 1;
+  double _calories = 1000.0;
 
   @override
   void initState() {
     super.initState();
+    _initializeCalories();
     _loadStreak();
+    _loadStats();
+  }
+
+  Future<void> _initializeCalories() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('calories')) {
+      await prefs.setDouble('calories', 1000.0);
+    }
   }
 
   Future<void> _loadStreak() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     final String lastDate = prefs.getString('last_active_date') ?? "";
     final int savedStreak = prefs.getInt('streak_days') ?? 1;
 
@@ -40,39 +50,52 @@ class _HomeeState extends State<Homee> {
     setState(() {});
   }
 
+  Future<void> _loadStats() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _calories = prefs.getDouble('calories') ?? 1000.0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final screenWidth = size.width;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(Icons.account_circle, size: 40, color: Colors.white),
-                SizedBox(width: 3),
-                Text(
-                  "USER-NAME",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
+            const Icon(Icons.account_circle, size: 30, color: Colors.white),
+            const SizedBox(width: 5),
+            const Expanded(
+              child: Text(
+                "Chris",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
             ),
+            const SizedBox(width: 10),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
-                  BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 4, offset: Offset(2, 2))
+                  BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 4, offset: const Offset(2, 2))
                 ],
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.local_fire_department, color: Colors.orange, size: 30),
-                  SizedBox(width: 5),
-                  Text("$_streakDays", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                  const Icon(Icons.local_fire_department, color: Colors.orange, size: 24),
+                  const SizedBox(width: 5),
+                  Text(
+                    "$_streakDays",
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
                 ],
               ),
             ),
@@ -86,12 +109,12 @@ class _HomeeState extends State<Homee> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.grey[900]),
-              child: Text('Menu', style: TextStyle(fontSize: 24, color: Colors.white)),
+              child: const Text('Menu', style: TextStyle(fontSize: 24, color: Colors.white)),
             ),
-            ListTile(leading: Icon(Icons.home, color: Colors.white), title: Text("Home", style: TextStyle(color: Colors.white)), onTap: () {}),
-            ListTile(leading: Icon(Icons.settings, color: Colors.white), title: Text("Settings", style: TextStyle(color: Colors.white)), onTap: () {}),
-            ListTile(leading: Icon(Icons.info, color: Colors.white), title: Text("About", style: TextStyle(color: Colors.white)), onTap: () {}),
-            ListTile(leading: Icon(Icons.logout, color: Colors.white), title: Text("Logout", style: TextStyle(color: Colors.white)), onTap: () {}),
+            _buildDrawerTile(Icons.home, "Home"),
+            _buildDrawerTile(Icons.settings, "Settings"),
+            _buildDrawerTile(Icons.info, "About"),
+            _buildDrawerTile(Icons.logout, "Logout"),
           ],
         ),
       ),
@@ -107,25 +130,25 @@ class _HomeeState extends State<Homee> {
             ),
           ),
           SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
             child: Column(
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: size.height * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildStatCard("Calories", "79.9%", Colors.white),
-                    _buildStatCard("Proteins", "83.8%", Colors.white),
+                    _buildStatCard("Calories Gained", "${_calories.toStringAsFixed(1)} cal🔥", Colors.white, screenWidth),
                   ],
                 ),
-                SizedBox(height: 80),
-                _buildOptionButton(context, "Choose a food", Icons.fastfood, Colors.orange, '/foodPage'),
-                SizedBox(height: 20),
-                _buildOptionButton(context, "Choose a workout", Icons.fitness_center, Colors.orange, '/workoutPage'),
-                SizedBox(height: 20),
-                _buildOptionButton(context, "Get to be Trained?", Icons.sports_gymnastics_rounded, Colors.orange, '/tutorialPage'),
-                SizedBox(height: 20),
-                _buildOptionButton(context, "Other Information", Icons.info_outline, Colors.orange, '/trainingPage'),
-                SizedBox(height: 20),
+                SizedBox(height: size.height * 0.06),
+                _buildOptionButton(context, "Choose a food", Icons.fastfood, Colors.orange, '/foodpage', screenWidth),
+                SizedBox(height: size.height * 0.02),
+                _buildOptionButton(context, "Choose a workout", Icons.fitness_center, Colors.orange, '/workoutPage', screenWidth),
+                SizedBox(height: size.height * 0.02),
+                _buildOptionButton(context, "Get to be Trained?", Icons.sports_gymnastics_rounded, Colors.orange, '/tutorialPage', screenWidth),
+                SizedBox(height: size.height * 0.02),
+                _buildOptionButton(context, "Other Information", Icons.info_outline, Colors.orange, '/trainingPage', screenWidth),
+                SizedBox(height: size.height * 0.02),
               ],
             ),
           ),
@@ -133,49 +156,58 @@ class _HomeeState extends State<Homee> {
       ),
     );
   }
-}
-Widget _buildOptionButton(BuildContext context, String text, IconData icon, Color color, String route) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.pushNamed(context, route);
-    },
-    child: Container(
-      width: 310,
+
+  Widget _buildDrawerTile(IconData icon, String title) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.white),
+      title: Text(title, style: const TextStyle(color: Colors.white)),
+      onTap: () {},
+    );
+  }
+
+  Widget _buildStatCard(String title, String value, Color color, double screenWidth) {
+    return Container(
+      width: screenWidth * 0.6,
       height: 100,
       decoration: BoxDecoration(
-        // ignore: deprecated_member_use
         color: Colors.grey.withOpacity(0.5),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 2))],
+        boxShadow: [const BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 2))],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 50, color: color),
-          SizedBox(height: 10),
-          Text(text, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color)),
+          const SizedBox(height: 10),
+          Text(value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black)),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _buildStatCard(String title, String value, Color color) {
-  return Container(
-    width: 150,
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.grey.withOpacity(0.5),
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 2))],
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color)),
-        SizedBox(height: 10),
-        Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black)),
-      ],
-    ),
-  );
+  Widget _buildOptionButton(BuildContext context, String text, IconData icon, Color color, String route, double screenWidth) {
+    return GestureDetector(
+      onTap: () async {
+        await Navigator.pushNamed(context, route);
+        await _loadStats();
+      },
+      child: Container(
+        width: screenWidth * 0.9,
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [const BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 2))],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 50, color: color),
+            const SizedBox(height: 10),
+            Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
+  }
 }

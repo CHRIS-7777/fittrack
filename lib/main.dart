@@ -1,3 +1,4 @@
+import 'package:fitrack/pages/foodpage.dart';
 import 'package:fitrack/pages/homepage.dart';
 import 'package:fitrack/pages/lowerpage1.dart';
 import 'package:fitrack/pages/lowerpage2.dart';
@@ -12,6 +13,7 @@ import 'package:fitrack/pages/upperpage3.dart';
 import 'package:fitrack/pages/upperpage4.dart';
 import 'package:fitrack/pages/upperpage5.dart';
 import 'package:fitrack/pages/upperpage6.dart';
+import 'package:fitrack/pages/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,12 +39,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/tutorialPage', // Set initial route
+      initialRoute: '/home', // Set initial route
       routes: {
         '/home': (context) => Homee(),
         '/tutorialPage': (context) => TutorialPage(),
         '/splashscreen': (context) => SplashScreen(),
         '/upper1': (context) => upperpage1(),
+        '/workoutPage': (context) => WorkoutPage(),
       '/upper2': (context) =>upperpage2(),
       '/upper3': (context) => upperpage3(),
       '/upper4': (context) => upperpage4(),
@@ -54,7 +57,7 @@ class MyApp extends StatelessWidget {
       '/lower4': (context) =>lowerpage4(),
       '/lower5': (context) => lowerpage5(),
       '/lower6': (context) => lowerpage6(),
-        
+      '/foodpage':(context) =>Food_Page(),
       },
     );
   }
