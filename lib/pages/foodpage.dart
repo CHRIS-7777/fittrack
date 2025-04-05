@@ -12,14 +12,15 @@ class _Food_PageState extends State<Food_Page> {
   String _selectedFood = 'Apple';
   double _quantity = 1.0; // in KG
 
-  final List<String> foodItems = ['Apple', 'Banana', 'Chicken Biriyani', 'Fish Fry'];
+  final List<String> foodItems = ['Apple', 'Banana', 'Chicken Biriyani', 'Fish Fry','Egg'];
 
   double calculateCalories(String food, double kg) {
     Map<String, double> rates = {
       'Apple': 520.0,
       'Banana': 890.0,
       'Chicken Biriyani': 1500.0,
-      'Fish Fry': 1200.0
+      'Fish Fry': 1200.0,
+      'Egg':100,
     };
 
     double rate = rates[food] ?? 1000.0;
