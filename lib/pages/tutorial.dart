@@ -7,7 +7,7 @@ class TutorialPage extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 32, 32, 32),
+      
       body: Stack(
         
         children: [
@@ -92,12 +92,11 @@ class TutorialPage extends StatelessWidget {
         height: 100,
         decoration: BoxDecoration(
           // ignore: deprecated_member_use
-          color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.1),
+          color: const Color.fromARGB(255, 50, 50, 50).withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
-              blurRadius: 1,
               offset: Offset(2, 2),
             ),
           ],

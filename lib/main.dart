@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home', // Set initial route
+      initialRoute: '/splashscreen', // Set initial route
       routes: {
         '/home': (context) => Homee(),
         '/tutorialPage': (context) => TutorialPage(),
