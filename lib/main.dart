@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Image.asset('assets/gyy.png', height: 150),
               SizedBox(height: 20),
-              Text("FitRack",
+              Text("FitRack..",
                   style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
             ],
           ),
