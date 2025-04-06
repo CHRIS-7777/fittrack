@@ -6,26 +6,30 @@ class lowerpage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Lower Page 3"),
+        backgroundColor: Colors.black,
+        title: const Text("Squat", style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Container(
+          padding: const EdgeInsets.all(16),
           width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.6,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 141, 173, 226),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Center(
+          child: const SingleChildScrollView(
             child: Text(
-              "",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              "• Stand with feet shoulder-width apart.\n"
+              "• Lower hips back and down like sitting.\n"
+              "• Keep knees in line with toes.\n"
+              "• Stop when thighs are parallel to ground.\n"
+              "• Push through heels to return up.",
+              style: TextStyle(color: Colors.black, fontSize: 18, height: 1.5),
+              textAlign: TextAlign.left,
             ),
           ),
         ),

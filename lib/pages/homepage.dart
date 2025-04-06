@@ -111,10 +111,10 @@ class _HomeeState extends State<Homee> {
               decoration: BoxDecoration(color: Colors.grey[900]),
               child: const Text('Menu', style: TextStyle(fontSize: 24, color: Colors.white)),
             ),
-            _buildDrawerTile(Icons.home, "Home"),
-            _buildDrawerTile(Icons.settings, "Settings"),
-            _buildDrawerTile(Icons.info, "About"),
-            _buildDrawerTile(Icons.logout, "Logout"),
+            _buildDrawerTile(Icons.home, "Home","/home"),
+            _buildDrawerTile(Icons.settings, "Settings","/home"),
+            _buildDrawerTile(Icons.info, "About","/home"),
+            _buildDrawerTile(Icons.logout, "Logout","/splashscreen"),
           ],
         ),
       ),
@@ -157,11 +157,13 @@ class _HomeeState extends State<Homee> {
     );
   }
 
-  Widget _buildDrawerTile(IconData icon, String title) {
+  Widget _buildDrawerTile(IconData icon, String title,String route) {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
       title: Text(title, style: const TextStyle(color: Colors.white)),
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, route);
+      },
     );
   }
 

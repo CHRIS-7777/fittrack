@@ -6,26 +6,38 @@ class upperpage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black, // Set background to black
       appBar: AppBar(
-        title: const Text("Upper Page 2"),
+        backgroundColor: Colors.black,
+        title: const Text(
+          "Cable Chest Fly",
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Container(
+          padding: const EdgeInsets.all(16),
           width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.6,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 141, 173, 226),
+            color: Colors.white, // White container
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Center(
+          child: const SingleChildScrollView(
             child: Text(
-              "",
-              textAlign: TextAlign.center,
+              "• Stand in the center of the cable machine.\n"
+              "• Grip handles with palms facing forward.\n"
+              "• Slight bend in elbows, arms extended out to sides.\n"
+              "• Bring handles together in front of chest.\n"
+              "• Squeeze chest at the center, then slowly return.",
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                height: 1.5,
+                fontWeight: FontWeight.w500,
               ),
+              textAlign: TextAlign.left,
             ),
           ),
         ),
