@@ -12,18 +12,20 @@ class _Food_PageState extends State<Food_Page> {
   String _selectedFood = 'Apple';
   double _quantity = 1.0; // in KG
 
-  final List<String> foodItems = ['Apple', 'Banana', 'Chicken Biriyani', 'Fish Fry','Egg'];
+  final List<String> foodItems = ['Apple', 'Banana', 'Chicken Biriyani', 'Fish Fry','Egg','Poori','Strawberry'];
 
   double calculateCalories(String food, double kg) {
     Map<String, double> rates = {
       'Apple': 520.0,
       'Banana': 890.0,
-      'Chicken Biriyani': 1500.0,
+      'Chicken': 1500.0,
       'Fish Fry': 1200.0,
       'Egg':100,
+      'Poori':200,
+      'Strawberry':120,
     };
 
-    double rate = rates[food] ?? 1000.0;
+    double rate = rates[food] ?? 0;
     return rate * kg;
   }
 
@@ -111,7 +113,7 @@ class _Food_PageState extends State<Food_Page> {
                       content: Text(
                         "You gained ${gained.toStringAsFixed(1)} cal from $_quantity kg of $_selectedFood!\nTotal: ${updatedCalories.toStringAsFixed(1)}",
                       ),
-                      duration: const Duration(seconds: 4),
+                      duration: const Duration(seconds: 7),
                       backgroundColor: Colors.green[600],
                     ),
                   );
