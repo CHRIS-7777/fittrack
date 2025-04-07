@@ -12,7 +12,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   String _selectedWorkout = 'Running';
   int _duration = 30;
 
-  final List<String> workouts = ['Running', 'Cycling', 'Yoga', 'Weight Lifting'];
+  final List<String> workouts = ['Running', 'Cycling', 'Yoga', 'Weight Lifting','Swimming','Skipping'];
 
   int calculateCalories(String workout, int duration) {
     Map<String, double> rates = {
@@ -20,6 +20,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
       'Cycling': 8.0,
       'Yoga': 4.0,
       'Weight Lifting': 6.0,
+      'Swimming':10.0,
+      'Skipping':20.0,
+      
     };
     double rate = rates[workout] ?? 5.0;
     return (rate * duration).toInt();
