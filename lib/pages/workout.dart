@@ -104,7 +104,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text("You burned $burned cal! Remaining: ${updatedCalories.toStringAsFixed(1)}"),
-                      duration: const Duration(seconds: 5),
+                      duration: const Duration(seconds: 7),
                       backgroundColor: Colors.green[600],
                     ),
                   );
