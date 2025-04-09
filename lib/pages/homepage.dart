@@ -13,6 +13,8 @@ class Homee extends StatefulWidget {
 class _HomeeState extends State<Homee> {
   int _streakDays = 1;
   double _calories = 0.0;
+  double _gained = 0.0;
+  double _burned = 0.0;
   Timer? _dayCheckTimer;
 
   @override
@@ -66,6 +68,8 @@ class _HomeeState extends State<Homee> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _calories = prefs.getDouble('calories') ?? 0;
+      _gained = prefs.getDouble('calories_gained') ?? 0;
+      _burned = prefs.getDouble('calories_burned') ?? 0;
     });
   }
 
@@ -184,13 +188,31 @@ class _HomeeState extends State<Homee> {
             child: Column(
               children: [
                 SizedBox(height: size.height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Column(
                   children: [
-                    _buildStatCard("Calories Gained", "${_calories.toStringAsFixed(1)} cal🔥", Colors.white, screenWidth),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildStatCard("Gained", "${_gained.toStringAsFixed(1)} cal", Colors.green, screenWidth),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildStatCard("Burned", "${_burned.toStringAsFixed(1)} cal", Colors.redAccent, screenWidth),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildStatCard("Updated Calories", "${_calories.toStringAsFixed(1)} cal", Colors.orange, screenWidth),
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(height: size.height * 0.06),
+                SizedBox(height: size.height * 0.04),
                 _buildOptionButton(context, "Choose a food", Icons.fastfood, Colors.orange, '/foodpage', screenWidth),
                 SizedBox(height: size.height * 0.02),
                 _buildOptionButton(context, "Choose a workout", Icons.fitness_center, Colors.orange, '/workoutPage', screenWidth),
@@ -230,7 +252,7 @@ class _HomeeState extends State<Homee> {
 
   Widget _buildStatCard(String title, String value, Color color, double screenWidth) {
     return Container(
-      width: screenWidth * 0.6,
+      width: screenWidth * 0.9,
       height: 100,
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.5),
