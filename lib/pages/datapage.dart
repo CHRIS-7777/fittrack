@@ -10,7 +10,7 @@ class DataPage extends StatefulWidget {
 }
 
 class _DataPageState extends State<DataPage> {
-  Map<String, dynamic> _logData = {};
+  List<Map<String, dynamic>> _logEntries = [];
 
   @override
   void initState() {
@@ -22,16 +22,17 @@ class _DataPageState extends State<DataPage> {
     final prefs = await SharedPreferences.getInstance();
     String? dataJson = prefs.getString('daily_log');
     if (dataJson != null) {
+      List<dynamic> decoded = jsonDecode(dataJson);
       setState(() {
-        _logData = jsonDecode(dataJson);
+        _logEntries = decoded.map((e) => Map<String, dynamic>.from(e)).toList();
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> sortedDates = _logData.keys.toList()
-      ..sort((a, b) => a.compareTo(b));
+    List<Map<String, dynamic>> sortedEntries = [..._logEntries];
+    sortedEntries.sort((a, b) => a['date'].compareTo(b['date']));
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -40,7 +41,7 @@ class _DataPageState extends State<DataPage> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-      body: _logData.isEmpty
+      body: sortedEntries.isEmpty
           ? const Center(child: Text("No data saved yet.", style: TextStyle(color: Colors.white)))
           : SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -51,14 +52,11 @@ class _DataPageState extends State<DataPage> {
                   DataColumn(label: Text("Gained", style: TextStyle(color: Colors.orange))),
                   DataColumn(label: Text("Burned", style: TextStyle(color: Colors.orange))),
                 ],
-                rows: sortedDates.map((date) {
-                  final data = _logData[date];
-                  final gained = data['gained'];
-                  final burned = data['burned'];
+                rows: sortedEntries.map((entry) {
                   return DataRow(cells: [
-                    DataCell(Text(date, style: const TextStyle(color: Colors.white))),
-                    DataCell(Text(gained.toString(), style: const TextStyle(color: Colors.green))),
-                    DataCell(Text(burned.toString(), style: const TextStyle(color: Colors.red))),
+                    DataCell(Text(entry['date'], style: const TextStyle(color: Colors.white))),
+                    DataCell(Text(entry['gained'].toString(), style: const TextStyle(color: Colors.green))),
+                    DataCell(Text(entry['burned'].toString(), style: const TextStyle(color: Colors.red))),
                   ]);
                 }).toList(),
               ),

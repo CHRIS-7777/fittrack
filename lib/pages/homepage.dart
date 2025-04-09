@@ -185,7 +185,7 @@ class _HomeeState extends State<Homee> {
           padding: EdgeInsets.all(screenWidth * 0.05),
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -194,7 +194,6 @@ class _HomeeState extends State<Homee> {
                   Expanded(child: _buildStatCard("Burned 📌", "${_burned.toStringAsFixed(1)} cal", Colors.redAccent, screenWidth)),
                 ],
               ),
-              const SizedBox(height: 15),
               _buildStatCard("Calories Gained🔥", "${_calories.toStringAsFixed(1)} cal", Colors.orange, screenWidth),
               const SizedBox(height: 30),
               GridView.count(
