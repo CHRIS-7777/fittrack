@@ -214,7 +214,7 @@ class _HomeeState extends State<Homee> {
                 onPressed: _saveTodayData,
                 icon: const Icon(Icons.save, size: 30),
                 label: const Text(
-                  "Save Today's Data",
+                  "Save Data",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
