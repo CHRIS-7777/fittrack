@@ -101,7 +101,7 @@ class _Food_PageState extends State<Food_Page> {
                   double gained = calculateCalories(_selectedFood, _quantity);
 
                   final prefs = await SharedPreferences.getInstance();
-                  double currentCalories = prefs.getDouble('calories') ?? 1000.0;
+                  double currentCalories = prefs.getDouble('calories') ?? 0;
 
                   double updatedCalories = currentCalories + gained;
                   updatedCalories = updatedCalories.clamp(0.0, 10000.0);

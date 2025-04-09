@@ -99,7 +99,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 onPressed: () async {
                   int burned = calculateCalories(_selectedWorkout, _duration);
                   final prefs = await SharedPreferences.getInstance();
-                  double currentCalories = prefs.getDouble('calories') ?? 1000.0;
+                  double currentCalories = prefs.getDouble('calories') ?? 0;
                   double updatedCalories = currentCalories - burned;
                   updatedCalories = updatedCalories.clamp(0.0, 10000.0);
                   await prefs.setDouble('calories', updatedCalories);

@@ -11,7 +11,9 @@ class Homee extends StatefulWidget {
 
 class _HomeeState extends State<Homee> {
   int _streakDays = 1;
-  double _calories = 1000.0;
+  double _calories = 0.0;
+  Timer? _dayCheckTimer;
+  DateTime _lastCheckedDate = DateTime.now();
 
   @override
   void initState() {
@@ -19,12 +21,25 @@ class _HomeeState extends State<Homee> {
     _initializeCalories();
     _loadStreak();
     _loadStats();
+    _startDayChangeChecker();
+  }
+
+  void _startDayChangeChecker() {
+    _dayCheckTimer = Timer.periodic(const Duration(minutes: 1), (timer) async {
+      DateTime now = DateTime.now();
+      if (now.day != _lastCheckedDate.day ||
+          now.month != _lastCheckedDate.month ||
+          now.year != _lastCheckedDate.year) {
+        _lastCheckedDate = now;
+        await _loadStreak();
+      }
+    });
   }
 
   Future<void> _initializeCalories() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('calories')) {
-      await prefs.setDouble('calories', 1000.0);
+      await prefs.setDouble('calories', 0);
     }
   }
 
@@ -53,8 +68,14 @@ class _HomeeState extends State<Homee> {
   Future<void> _loadStats() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _calories = prefs.getDouble('calories') ?? 1000.0;
+      _calories = prefs.getDouble('calories') ?? 0;
     });
+  }
+
+  @override
+  void dispose() {
+    _dayCheckTimer?.cancel();
+    super.dispose();
   }
 
   @override
