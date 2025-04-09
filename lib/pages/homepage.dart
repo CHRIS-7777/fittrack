@@ -156,6 +156,23 @@ class _HomeeState extends State<Homee> {
           ],
         ),
       ),
+      drawer: Drawer(
+  backgroundColor: Colors.black,
+  child: ListView(
+    padding: EdgeInsets.zero,
+    children: [
+      DrawerHeader(
+        decoration: BoxDecoration(color: Colors.grey[900]),
+        child: const Text('Menu', style: TextStyle(fontSize: 24, color: Colors.white)),
+      ),
+      _buildDrawerTile(Icons.home, "Home", "/home"),
+      _buildDrawerTile(Icons.settings, "Settings", "/home"),
+      _buildDrawerTile(Icons.info, "About", "/home"),
+      _buildDrawerTile(Icons.logout, "Logout", "/splashscreen"),
+    ],
+  ),
+),
+
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -194,16 +211,21 @@ class _HomeeState extends State<Homee> {
                 ],
               ),
               const SizedBox(height: 25),
-              ElevatedButton.icon(
-                onPressed: _saveTodayData,
-                icon: const Icon(Icons.save),
-                label: const Text("Save Today's Data"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                ),
-              ),
+             ElevatedButton.icon(
+  onPressed: _saveTodayData,
+  icon: const Icon(Icons.save, size: 30),
+  label: const Text(
+    "Save Today's Data",
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+  ),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green[700],
+    foregroundColor: Colors.white,
+    elevation: 8,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+  ),
+),
               const SizedBox(height: 25),
             ],
           ),
@@ -231,6 +253,16 @@ class _HomeeState extends State<Homee> {
       ),
     );
   }
+  Widget _buildDrawerTile(IconData icon, String title, String route) {
+  return ListTile(
+    leading: Icon(icon, color: Colors.white),
+    title: Text(title, style: const TextStyle(color: Colors.white)),
+    onTap: () {
+      Navigator.pushNamed(context, route);
+    },
+  );
+}
+
 
   Widget _buildOptionButton(BuildContext context, String text, IconData icon, Color color, String route, double screenWidth) {
     return GestureDetector(
