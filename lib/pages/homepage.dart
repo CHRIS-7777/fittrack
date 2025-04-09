@@ -156,104 +156,66 @@ class _HomeeState extends State<Homee> {
           ],
         ),
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.black,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.grey[900]),
-              child: const Text('Menu', style: TextStyle(fontSize: 24, color: Colors.white)),
-            ),
-            _buildDrawerTile(Icons.home, "Home", "/home"),
-            _buildDrawerTile(Icons.settings, "Settings", "/home"),
-            _buildDrawerTile(Icons.info, "About", "/home"),
-            _buildDrawerTile(Icons.logout, "Logout", "/splashscreen"),
-          ],
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/gymboy.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(screenWidth * 0.05),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(child: _buildStatCard("Gained 📌", "${_gained.toStringAsFixed(1)} cal", Colors.green, screenWidth)),
+                  const SizedBox(width: 10),
+                  Expanded(child: _buildStatCard("Burned 📌", "${_burned.toStringAsFixed(1)} cal", Colors.redAccent, screenWidth)),
+                ],
+              ),
+              const SizedBox(height: 15),
+              _buildStatCard("Calories Gained🔥", "${_calories.toStringAsFixed(1)} cal", Colors.orange, screenWidth),
+              const SizedBox(height: 30),
+              GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                children: [
+                  _buildOptionButton(context, "Choose a food", Icons.fastfood, Colors.orange, '/foodpage', screenWidth),
+                  _buildOptionButton(context, "Choose a workout", Icons.fitness_center, Colors.orange, '/workoutPage', screenWidth),
+                  _buildOptionButton(context, "Get to be Trained?", Icons.sports_gymnastics_rounded, Colors.orange, '/tutorialPage', screenWidth),
+                  _buildOptionButton(context, "Other Information", Icons.info_outline, Colors.orange, '/trainingPage', screenWidth),
+                ],
+              ),
+              const SizedBox(height: 25),
+              ElevatedButton.icon(
+                onPressed: _saveTodayData,
+                icon: const Icon(Icons.save),
+                label: const Text("Save Today's Data"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                ),
+              ),
+              const SizedBox(height: 25),
+            ],
+          ),
         ),
       ),
-      body: Stack(
-        children: [
-          Opacity(
-            opacity: 1,
-            child: Image.asset(
-              "assets/gymboy.jpg",
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
-          ),
-          SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.03),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildStatCard("Gained", "${_gained.toStringAsFixed(1)} cal", Colors.green, screenWidth),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildStatCard("Burned", "${_burned.toStringAsFixed(1)} cal", Colors.redAccent, screenWidth),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildStatCard("Updated Calories", "${_calories.toStringAsFixed(1)} cal", Colors.orange, screenWidth),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.04),
-                _buildOptionButton(context, "Choose a food", Icons.fastfood, Colors.orange, '/foodpage', screenWidth),
-                SizedBox(height: size.height * 0.02),
-                _buildOptionButton(context, "Choose a workout", Icons.fitness_center, Colors.orange, '/workoutPage', screenWidth),
-                SizedBox(height: size.height * 0.02),
-                _buildOptionButton(context, "Get to be Trained?", Icons.sports_gymnastics_rounded, Colors.orange, '/tutorialPage', screenWidth),
-                SizedBox(height: size.height * 0.02),
-                _buildOptionButton(context, "Other Information", Icons.info_outline, Colors.orange, '/trainingPage', screenWidth),
-                SizedBox(height: size.height * 0.02),
-                ElevatedButton.icon(
-                  onPressed: _saveTodayData,
-                  icon: const Icon(Icons.save),
-                  label: const Text("Save Today's Data"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                  ),
-                ),
-                SizedBox(height: size.height * 0.03),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDrawerTile(IconData icon, String title, String route) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
-      onTap: () {
-        Navigator.pushNamed(context, route);
-      },
     );
   }
 
   Widget _buildStatCard(String title, String value, Color color, double screenWidth) {
     return Container(
-      width: screenWidth * 0.9,
       height: 100,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.5),
         borderRadius: BorderRadius.circular(12),
@@ -277,8 +239,6 @@ class _HomeeState extends State<Homee> {
         await _loadStats();
       },
       child: Container(
-        width: screenWidth * 0.9,
-        height: 100,
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
@@ -289,7 +249,7 @@ class _HomeeState extends State<Homee> {
           children: [
             Icon(icon, size: 50, color: color),
             const SizedBox(height: 10),
-            Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(text, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
