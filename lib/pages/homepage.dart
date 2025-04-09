@@ -189,12 +189,12 @@ class _HomeeState extends State<Homee> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(child: _buildStatCard("Gained 📌", "${_gained.toStringAsFixed(1)} cal", Colors.green, screenWidth)),
+                  Expanded(child: _buildStatCard("Gained 📌", "${_gained.toStringAsFixed(1)} cal", const Color.fromARGB(255, 255, 89, 0), screenWidth)),
                   const SizedBox(width: 10),
                   Expanded(child: _buildStatCard("Burned 📌", "${_burned.toStringAsFixed(1)} cal", Colors.redAccent, screenWidth)),
                 ],
               ),
-              _buildStatCard("Calories Gained🔥", "${_calories.toStringAsFixed(1)} cal", Colors.orange, screenWidth),
+              _buildStatCard("  Calories Gained🔥", "${_calories.toStringAsFixed(1)} cal", const Color.fromARGB(255, 81, 255, 0), screenWidth),
               const SizedBox(height: 30),
               GridView.count(
                 crossAxisCount: 2,
@@ -218,7 +218,7 @@ class _HomeeState extends State<Homee> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green[700],
+                  backgroundColor: const Color.fromARGB(108, 202, 25, 25),
                   foregroundColor: Colors.white,
                   elevation: 8,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
