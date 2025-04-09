@@ -60,7 +60,6 @@ class MyApp extends StatelessWidget {
       '/lower6': (context) => lowerpage6(),
       '/foodpage':(context) =>Food_Page(),
       '/dataPage': (context) => DataPage(),
-
       },
     );
   }

@@ -98,33 +98,38 @@ class _Food_PageState extends State<Food_Page> {
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  double gained = calculateCalories(_selectedFood, _quantity);
+  double gained = calculateCalories(_selectedFood, _quantity);
 
-                  final prefs = await SharedPreferences.getInstance();
-                  double currentCalories = prefs.getDouble('calories') ?? 0;
+  final prefs = await SharedPreferences.getInstance();
+  double currentCalories = prefs.getDouble('calories') ?? 0;
 
-                  double updatedCalories = currentCalories + gained;
-                  updatedCalories = updatedCalories.clamp(0.0, 10000.0);
+  double updatedCalories = currentCalories + gained;
+  updatedCalories = updatedCalories.clamp(0.0, 10000.0);
 
-                  await prefs.setDouble('calories', updatedCalories);
+  // 🔥 Store total calories
+  await prefs.setDouble('calories', updatedCalories);
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        "You gained ${gained.toStringAsFixed(1)} cal from $_quantity kg of $_selectedFood!\nTotal: ${updatedCalories.toStringAsFixed(1)}",
-                      ),
-                      duration: const Duration(seconds: 7),
-                      backgroundColor: Colors.green[600],
-                    ),
-                  );
+  // 🟢 NEW: Add to 'calories_gained'
+  double prevGained = prefs.getDouble('calories_gained') ?? 0;
+  await prefs.setDouble('calories_gained', prevGained + gained);
 
-                  Navigator.pop(context, {
-                    'food': _selectedFood,
-                    'quantity': _quantity,
-                    'caloriesGained': gained,
-                    'updatedCalories': updatedCalories,
-                  });
-                },
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        "You gained ${gained.toStringAsFixed(1)} cal from $_quantity kg of $_selectedFood!\nTotal: ${updatedCalories.toStringAsFixed(1)}",
+      ),
+      duration: const Duration(seconds: 7),
+      backgroundColor: Colors.green[600],
+    ),
+  );
+
+  Navigator.pop(context, {
+    'food': _selectedFood,
+    'quantity': _quantity,
+    'caloriesGained': gained,
+    'updatedCalories': updatedCalories,
+  });
+},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange[700],
                   foregroundColor: Colors.white,

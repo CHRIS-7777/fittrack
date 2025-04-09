@@ -97,28 +97,35 @@ class _WorkoutPageState extends State<WorkoutPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  int burned = calculateCalories(_selectedWorkout, _duration);
-                  final prefs = await SharedPreferences.getInstance();
-                  double currentCalories = prefs.getDouble('calories') ?? 0;
-                  double updatedCalories = currentCalories - burned;
-                  updatedCalories = updatedCalories.clamp(0.0, 10000.0);
-                  await prefs.setDouble('calories', updatedCalories);
+  int burned = calculateCalories(_selectedWorkout, _duration);
+  final prefs = await SharedPreferences.getInstance();
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("You burned $burned cal! Remaining: ${updatedCalories.toStringAsFixed(1)}"),
-                      duration: const Duration(seconds: 7),
-                      backgroundColor: Colors.green[600],
-                    ),
-                  );
+  double currentCalories = prefs.getDouble('calories') ?? 0;
+  double updatedCalories = currentCalories - burned;
+  updatedCalories = updatedCalories.clamp(0.0, 10000.0);
 
-                  Navigator.pop(context, {
-                    'workout': _selectedWorkout,
-                    'duration': _duration,
-                    'caloriesBurned': burned,
-                    'updatedCalories': updatedCalories,
-                  });
-                },
+  // 🔥 Update total calories
+  await prefs.setDouble('calories', updatedCalories);
+
+  // 🔴 NEW: Update calories_burned
+  double prevBurned = prefs.getDouble('calories_burned') ?? 0;
+  await prefs.setDouble('calories_burned', prevBurned + burned);
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text("You burned $burned cal! Remaining: ${updatedCalories.toStringAsFixed(1)}"),
+      duration: const Duration(seconds: 7),
+      backgroundColor: Colors.green[600],
+    ),
+  );
+
+  Navigator.pop(context, {
+    'workout': _selectedWorkout,
+    'duration': _duration,
+    'caloriesBurned': burned,
+    'updatedCalories': updatedCalories,
+  });
+},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange[700],
                   foregroundColor: Colors.white,

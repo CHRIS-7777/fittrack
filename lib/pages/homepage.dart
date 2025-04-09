@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import 'dart:convert';
 
 class Homee extends StatefulWidget {
   const Homee({super.key});
@@ -37,38 +38,59 @@ class _HomeeState extends State<Homee> {
   }
 
   Future<void> _checkAndUpdateStreak() async {
-  final prefs = await SharedPreferences.getInstance();
-  final String? lastDateStr = prefs.getString('last_active_date');
-  final int savedStreak = prefs.getInt('streak_days') ?? 0;
+    final prefs = await SharedPreferences.getInstance();
+    final String? lastDateStr = prefs.getString('last_active_date');
+    final int savedStreak = prefs.getInt('streak_days') ?? 0;
 
-  DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
 
-  if (lastDateStr == null) {
-    // First run: initialize with streak = 1
-    _streakDays = 1;
-    await prefs.setInt('streak_days', _streakDays);
-    await prefs.setString('last_active_date', now.toIso8601String());
-  } else {
-    DateTime lastDate = DateTime.parse(lastDateStr);
-
-    // If new day, increment streak
-    if (now.year != lastDate.year || now.month != lastDate.month || now.day != lastDate.day) {
-      _streakDays = savedStreak + 1;
+    if (lastDateStr == null) {
+      _streakDays = 1;
       await prefs.setInt('streak_days', _streakDays);
       await prefs.setString('last_active_date', now.toIso8601String());
     } else {
-      _streakDays = savedStreak;
+      DateTime lastDate = DateTime.parse(lastDateStr);
+      if (now.year != lastDate.year || now.month != lastDate.month || now.day != lastDate.day) {
+        _streakDays = savedStreak + 1;
+        await prefs.setInt('streak_days', _streakDays);
+        await prefs.setString('last_active_date', now.toIso8601String());
+      } else {
+        _streakDays = savedStreak;
+      }
     }
-  }
 
-  setState(() {});
-}
+    setState(() {});
+  }
 
   Future<void> _loadStats() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _calories = prefs.getDouble('calories') ?? 0;
     });
+  }
+
+  Future<void> _saveTodayData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final now = DateTime.now();
+    final String today = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
+    double gained = prefs.getDouble('calories_gained') ?? 0;
+    double burned = prefs.getDouble('calories_burned') ?? 0;
+
+    String? dataJson = prefs.getString('daily_log');
+    Map<String, dynamic> dataMap = dataJson != null ? jsonDecode(dataJson) : {};
+
+    dataMap[today] = {
+      "gained": gained,
+      "burned": burned,
+    };
+
+    await prefs.setString('daily_log', jsonEncode(dataMap));
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Saved: $gained cal gained, $burned cal burned on $today"),
+      backgroundColor: Colors.green,
+    ));
   }
 
   @override
@@ -96,6 +118,14 @@ class _HomeeState extends State<Homee> {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
+            ),
+            const SizedBox(width: 10),
+            IconButton(
+              icon: const Icon(Icons.table_chart, color: Colors.white),
+              tooltip: "Check Logs",
+              onPressed: () {
+                Navigator.pushNamed(context, '/dataPage');
+              },
             ),
             const SizedBox(width: 10),
             Container(
@@ -169,6 +199,17 @@ class _HomeeState extends State<Homee> {
                 SizedBox(height: size.height * 0.02),
                 _buildOptionButton(context, "Other Information", Icons.info_outline, Colors.orange, '/trainingPage', screenWidth),
                 SizedBox(height: size.height * 0.02),
+                ElevatedButton.icon(
+                  onPressed: _saveTodayData,
+                  icon: const Icon(Icons.save),
+                  label: const Text("Save Today's Data"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
               ],
             ),
           ),
