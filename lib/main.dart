@@ -1,3 +1,4 @@
+import 'package:fitrack/pages/datapage.dart';
 import 'package:fitrack/pages/foodpage.dart';
 import 'package:fitrack/pages/homepage.dart';
 import 'package:fitrack/pages/lowerpage1.dart';
@@ -58,6 +59,8 @@ class MyApp extends StatelessWidget {
       '/lower5': (context) => lowerpage5(),
       '/lower6': (context) => lowerpage6(),
       '/foodpage':(context) =>Food_Page(),
+      '/dataPage': (context) => DataPage(),
+
       },
     );
   }
