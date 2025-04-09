@@ -241,9 +241,6 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
-
-
 Widget _buildTextField(String hintText, TextEditingController controller,
     {bool isPassword = false, IconData? icon}) {
   return TextField(

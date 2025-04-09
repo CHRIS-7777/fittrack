@@ -13,26 +13,19 @@ class _HomeeState extends State<Homee> {
   int _streakDays = 1;
   double _calories = 0.0;
   Timer? _dayCheckTimer;
-  DateTime _lastCheckedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     _initializeCalories();
-    _loadStreak();
     _loadStats();
+    _checkAndUpdateStreak();
     _startDayChangeChecker();
   }
 
   void _startDayChangeChecker() {
-    _dayCheckTimer = Timer.periodic(const Duration(minutes: 1), (timer) async {
-      DateTime now = DateTime.now();
-      if (now.day != _lastCheckedDate.day ||
-          now.month != _lastCheckedDate.month ||
-          now.year != _lastCheckedDate.year) {
-        _lastCheckedDate = now;
-        await _loadStreak();
-      }
+    _dayCheckTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      _checkAndUpdateStreak();
     });
   }
 
@@ -43,27 +36,33 @@ class _HomeeState extends State<Homee> {
     }
   }
 
-  Future<void> _loadStreak() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String lastDate = prefs.getString('last_active_date') ?? "";
-    final int savedStreak = prefs.getInt('streak_days') ?? 1;
+  Future<void> _checkAndUpdateStreak() async {
+  final prefs = await SharedPreferences.getInstance();
+  final String? lastDateStr = prefs.getString('last_active_date');
+  final int savedStreak = prefs.getInt('streak_days') ?? 0;
 
-    DateTime now = DateTime.now();
-    DateTime lastActive = lastDate.isNotEmpty ? DateTime.parse(lastDate) : now;
+  DateTime now = DateTime.now();
 
-    if (now.difference(lastActive).inDays == 1) {
+  if (lastDateStr == null) {
+    // First run: initialize with streak = 1
+    _streakDays = 1;
+    await prefs.setInt('streak_days', _streakDays);
+    await prefs.setString('last_active_date', now.toIso8601String());
+  } else {
+    DateTime lastDate = DateTime.parse(lastDateStr);
+
+    // If new day, increment streak
+    if (now.year != lastDate.year || now.month != lastDate.month || now.day != lastDate.day) {
       _streakDays = savedStreak + 1;
-    } else if (now.difference(lastActive).inDays > 1) {
-      _streakDays = 1;
+      await prefs.setInt('streak_days', _streakDays);
+      await prefs.setString('last_active_date', now.toIso8601String());
     } else {
       _streakDays = savedStreak;
     }
-
-    await prefs.setInt('streak_days', _streakDays);
-    await prefs.setString('last_active_date', now.toIso8601String());
-
-    setState(() {});
   }
+
+  setState(() {});
+}
 
   Future<void> _loadStats() async {
     final prefs = await SharedPreferences.getInstance();
@@ -132,10 +131,10 @@ class _HomeeState extends State<Homee> {
               decoration: BoxDecoration(color: Colors.grey[900]),
               child: const Text('Menu', style: TextStyle(fontSize: 24, color: Colors.white)),
             ),
-            _buildDrawerTile(Icons.home, "Home","/home"),
-            _buildDrawerTile(Icons.settings, "Settings","/home"),
-            _buildDrawerTile(Icons.info, "About","/home"),
-            _buildDrawerTile(Icons.logout, "Logout","/splashscreen"),
+            _buildDrawerTile(Icons.home, "Home", "/home"),
+            _buildDrawerTile(Icons.settings, "Settings", "/home"),
+            _buildDrawerTile(Icons.info, "About", "/home"),
+            _buildDrawerTile(Icons.logout, "Logout", "/splashscreen"),
           ],
         ),
       ),
@@ -178,7 +177,7 @@ class _HomeeState extends State<Homee> {
     );
   }
 
-  Widget _buildDrawerTile(IconData icon, String title,String route) {
+  Widget _buildDrawerTile(IconData icon, String title, String route) {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
       title: Text(title, style: const TextStyle(color: Colors.white)),
